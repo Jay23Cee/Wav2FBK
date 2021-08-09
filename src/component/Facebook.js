@@ -87,7 +87,6 @@ source.onmessage = function(event) {
 
 
 
-
 // var source = new EventSource("https://streaming-graph.facebook.com/{live-video-id}/live_comments?access_token={access-token}&comment_rate=one_per_two_seconds&fields=from{name,id},message");
 // source.onmessage = function(event) {
 //   // Do something with event.message for example
