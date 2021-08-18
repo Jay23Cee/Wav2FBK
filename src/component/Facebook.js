@@ -66,24 +66,34 @@ fbContent = (
     }
 }
 
+var userid = ""
+var accesstoken = "EAAdbFKpjrhYBAOY1LdkGga5BeUvjgMAlZAR8EGxROVSrnajQrWWtKZApXM4IFbH2R3klzJjX8WC2f4y1rslzDZCUIVaZAsktYSta5AUi3nqJ05PvUoQoPZCFNyokmczMwhFGFlqxqOTecJiQinJwc3qCKz59o7ymNnXcRmxfirn9ifcaRMIMziQXZB3EudOd3JCYCqTaZAZAk1THaXC2UaS1alMWq2GITBA6V8pEwPIxLCPyEab4nc7E9slqMYLzevIZD"
 
 
+var videoID = "1246110602508900"
+
+var source = new EventSource("https://streaming-graph.facebook.com/"+videoID+"/live_comments?access_token=" + accesstoken+"&comment_rate=one_hundred_per_second&fields=from{name,id},message");
 
 
-var source = new EventSource("https://streaming-graph.facebook.com/620229992279431/live_comments?access_token=EAAdbFKpjrhYBADYRV7xA6tZC5z7hzaKapj5DM5jtSa32ZCr3ay01RaYLohx3wgIEQuZCNz0IQt1SGHiBaTKRS1QHZABhVcmwzzGNueRYsCcBacwZCC4es7GtKBxDxRiqbzZBQJ0VwrslT2srex2Dgwk59AHeiU2pd8extfGZBODq8NZAaPcUxkwTmidsWmyUBwDOsqsCChnGZAE3fZAB5HB9bNNOGlkKrxx9aZCrIQxJG9jOZCc2SfulZCHrVbgMfFJTMuokZD&comment_rate=one_per_two_seconds&fields=from{name,id},message");
 source.onmessage = function(event) {
     var result = JSON.parse(event["data"])
 
     
    // console.log("EVENT_: ", event)
-    console.log("DATA:_ ", result["message"])
+    console.log("Message:_ ", result["message"])
 
-   console.log("type of data:", event["data"])
-  
-    
+  // userid = String( result["id"]).replace(videoID+"_", "")
 
-  // Do something with event.message for example
+  if (result["from"] != null){
+    console.log("FROM ! !:", result["from"])
+  }
+  // console.log("type of data:", result )
+
+
+
 };
+
+
 
 
 
