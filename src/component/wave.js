@@ -10,20 +10,6 @@ import {
 } from "@apollo/client";
 import { setContext } from '@apollo/client/link/context';
 
-const Query_bussiness = gql`
-  query {
-    businesses {
-      edges {
-        node {
-          id
-          name
-          countries
-        }
-      }
-    }
-  }
-`;
-
 function Wave() {
   return (
     <ApolloProvider client={client}>
@@ -49,7 +35,6 @@ const Query_bus = gql`
   }
   `;
   
-
   function WaveData(){
    
 
@@ -69,9 +54,6 @@ const Query_bus = gql`
         </div>
 
       )
-     
-      
-    
   }
 
 
@@ -97,26 +79,5 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 });
 
-
-
-
-
-
-     // let bear_token = "Bearer eyuuMOuBJRYjpf59rFX0euH4cVlBzo";
-    // fetch("https://gql.waveapps.com/graphql/public", {
-    //   method: "POST",
-    //   headers: {
-    //     Authorization: bear_token,
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     query:
-    //       "query { user { id defaultEmail firstName  } accountTypes{name} }",
-    //     variables: {},
-    //   }),
-    // })
-    //   .then((r) => r.json())
-    //   .then((data) =>{ 
-    //   });
       
 export default Wave;
