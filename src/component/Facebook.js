@@ -67,15 +67,15 @@ fbContent = (
 }
 
 var userid = ""
-var accesstoken = "EAAdbFKpjrhYBAOY1LdkGga5BeUvjgMAlZAR8EGxROVSrnajQrWWtKZApXM4IFbH2R3klzJjX8WC2f4y1rslzDZCUIVaZAsktYSta5AUi3nqJ05PvUoQoPZCFNyokmczMwhFGFlqxqOTecJiQinJwc3qCKz59o7ymNnXcRmxfirn9ifcaRMIMziQXZB3EudOd3JCYCqTaZAZAk1THaXC2UaS1alMWq2GITBA6V8pEwPIxLCPyEab4nc7E9slqMYLzevIZD"
+var accesstoken = "EAAdbFKpjrhYBAPxX8JCD0F3y881ZCSzYmUMLMCa1MROZBnZC44o2vwYTL0dn4YHNAACG926Elxf3HQAk2qKvBUER9g6Mv3GgtKZC46f5bVB5Wgr024IvshQZCEZAwiCx0kXwkZAdxYV05h8ka4Ky8tbXUTJ2gxcZBPm3NzFuwO072yfdj7BRawv2HvtqsYGcZCPRnZBhlXB9lQu3JX1MlHZBfJSvmMAWFkkHuDe249ZB0pvqI2WX1SAeZAcnfvlTZBG8OZBnV4ZD"
 
 
-var videoID = "1246110602508900"
+var videoID = "657179922314657"
 
 var source = new EventSource("https://streaming-graph.facebook.com/"+videoID+"/live_comments?access_token=" + accesstoken+"&comment_rate=one_hundred_per_second&fields=from{name,id},message");
 
-
 source.onmessage = function(event) {
+
     var result = JSON.parse(event["data"])
 
     
