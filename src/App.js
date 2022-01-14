@@ -11,9 +11,9 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 
-//import Facebook from './component/Facebook'
+// import Facebook from './component/Facebook'
 
-import Wave from './component/Wave';
+ import Wave from './component/Wave';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -64,11 +64,10 @@ export default class App extends React.Component {
             </Breadcrumb>
             <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
               Bill is a cat 
-              
 
-         
-            
-            <Wave/>
+              <Wave/>
+              
+           
             </div>
           </Content>
           <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>

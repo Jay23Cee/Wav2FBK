@@ -67,12 +67,12 @@ fbContent = (
 }
 
 var userid = ""
-var accesstoken = "EAAdbFKpjrhYBAPxX8JCD0F3y881ZCSzYmUMLMCa1MROZBnZC44o2vwYTL0dn4YHNAACG926Elxf3HQAk2qKvBUER9g6Mv3GgtKZC46f5bVB5Wgr024IvshQZCEZAwiCx0kXwkZAdxYV05h8ka4Ky8tbXUTJ2gxcZBPm3NzFuwO072yfdj7BRawv2HvtqsYGcZCPRnZBhlXB9lQu3JX1MlHZBfJSvmMAWFkkHuDe249ZB0pvqI2WX1SAeZAcnfvlTZBG8OZBnV4ZD"
+var accesstoken = "EAAdbFKpjrhYBAGDFuTQfj3pPrlTzvCghWAajyUMHhlpSW5TiPIouPyWqbWAnmkDJHn3w3qHiUjYL2TqeyVyeKj8Dv9uJ27mjZATfZAiVULVxEdeHtubBEmAnP9yg8Hy7cZACjq6Lad5aMII5PDCdnrtUVNPInp1k6m0v54fB6Ifz1LWAEfhs3tukcNhKaPdqj1ZBJ2HXuZAoHt30x0R3vKb4kvpawnwgvgLcTFlKk6Hmo3kopEgDgK80v0QPJ7ikZD"
 
+var videoID = "1918597575014780"
+var live_url= "https://streaming-graph.facebook.com/"+videoID+"/live_comments?access_token=" + accesstoken+"&comment_rate=one_hundred_per_second&fields=from{name,id},message"
 
-var videoID = "657179922314657"
-
-var source = new EventSource("https://streaming-graph.facebook.com/"+videoID+"/live_comments?access_token=" + accesstoken+"&comment_rate=one_hundred_per_second&fields=from{name,id},message");
+var source = new EventSource(live_url);
 
 source.onmessage = function(event) {
 
@@ -87,7 +87,7 @@ source.onmessage = function(event) {
   if (result["from"] != null){
     console.log("FROM ! !:", result["from"])
   }
-  // console.log("type of data:", result )
+   console.log("type of data:", result )
 
 
 
