@@ -91,3 +91,95 @@ export class Address {
 
 
   }
+
+
+
+/// FOLLOWING IS THE GRAPH QL
+const token = 'zCtQa00zlorbFFum6I7Rlzc0QwMDoS';
+
+const createCustomer = (firstName,lastName,email,address,city,postalcode,countryCode)=> {
+  
+    let c_address = new Address(address," address", city, countryCode, postalcode)
+    let c_customer = new Customer(firstName,lastName,email,c_address);
+    
+    console.log("CLICK CLICK ",  c_customer.firstname + " "+ c_customer.lastname );
+  
+  
+  
+    const shema = `
+    mutation ($input: CustomerCreateInput!) {
+      customerCreate(input: $input) {
+        didSucceed
+        inputErrors {
+          code
+          message
+          path
+        }
+        customer {
+          id
+          name
+          firstName
+          lastName
+          email
+          address {
+            addressLine1
+            addressLine2
+            city
+            province {
+              code
+              name
+            }
+            country {
+              code
+              name
+            }
+            postalCode
+          }
+          currency {
+            code
+          }
+        }
+      }
+    }` 
+    
+    
+    console.log("CLICK CLICK ",  c_customer.firstname + " "+ c_customer.lastname );
+  
+  
+    fetch('https://gql.waveapps.com/graphql/public', {
+      method: 'POST',
+      headers: {
+        'Authorization': token ? `Bearer ${token}` : "",
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query: shema,
+        variables: { 
+          "input": {
+            "businessId": "QnVzaW5lc3M6ZTIyZmVhODEtNjg5OC00N2ZiLTgzOGItYWMyYzllNDZiM2Jk",
+            "name": c_customer.fullname,
+            "firstName": c_customer.firstname,
+            "lastName": c_customer.lastname,
+            "email": c_customer.email,
+            "address": {
+              "city":c_customer.address.city,
+              "postalCode": "90012",
+  
+            },
+            "currency": "USD"
+          }}
+        })
+      })
+      .then(r => r.json())
+      .then(data => console.log(data));
+  
+      // clear the textfield
+  
+     
+      // display customer created
+  
+     
+      console.log("CUSTOMER CREATED")
+    }
+  
+  export default createCustomer;

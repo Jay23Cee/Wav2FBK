@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import TextField from '@mui/material/TextField';
 import {Customer, Address} from './require/customer';
+import createCustomer from "./require/customer";
 
+import $ from 'jquery';
 
 import {
   ApolloClient,
@@ -13,10 +15,11 @@ import {
 } from "@apollo/client";
 import { setContext } from '@apollo/client/link/context';
 
+import Invoices from "./Invoices";
+import Products from "./Products";
 
 
-
-const token = 'G5qNRPdeVZMk1AAQIYuEuAGgu729yG';
+const token = 'zCtQa00zlorbFFum6I7Rlzc0QwMDoS';
 
 const httpLink = createHttpLink({
   uri: 'https://gql.waveapps.com/graphql/public',
@@ -40,7 +43,9 @@ const client = new ApolloClient({
 });
 
 
+
 function Wave() {
+
   const [firstName, setFirstName] = useState('');
   const  [lastName, setlastname]= useState('');
   const [email, setemail]= useState('');
@@ -48,16 +53,17 @@ function Wave() {
   const  [city, setcity]= useState('');
   const  [postalCode, setpostalcode]= useState('');
   const  [countryCode, setcountrycode]= useState('');
-        
+
   return (
     <ApolloProvider client={client}>
       <div>
         <h2>WAVE Information Below 🚀</h2>
 
+      
        <WaveData/>
   
      <br></br> Firstname
-      <TextField value={firstName}   name="firstName"  onChange={e =>setFirstName(e.target.value)} />
+     <TextField value={firstName}   name="firstName"  onChange={e => setFirstName(e.target.value)} />
       <br></br>Lastname
       <TextField value={lastName}   name="lastName"  onChange={e => setlastname(e.target.value)} />
      <br></br> Email
@@ -74,17 +80,20 @@ function Wave() {
       <br></br>countryCode
       <TextField value={countryCode}   name="countryCode"  onChange={e => setcountrycode(e.target.value)} />
 
-      <button className="myButton" onClick={ ()=> createCustomer(firstName,lastName,email,address,city,postalCode,countryCode)}>Create Customer</button>
+      <button className="myButton" onClick={ ()=>{  createCustomer(firstName,lastName,email,address,city,postalCode,countryCode)
+        }}>Create Customer</button>
+
+<button className="myProducts" onClick={ ()=>{  Products()
+        }}>Get Products</button>
+        
+
+        
       </div>
     </ApolloProvider>
   );
 }
 
 
-function Callme(e){
-  console.log("here")
- 
-}
 const Query_bus = gql`
 query {
   user {
@@ -111,7 +120,12 @@ function WaveData(){
           <ul>
             
               <li key={data.user.id}> {data.user.firstName}</li>
+              
           
+
+              
+                
+            
           </ul>
 
         </div>
@@ -122,78 +136,5 @@ function WaveData(){
 
 
 
-function createCustomer(firstName,lastName,email,address,city,postalcode,countryCode) {
-  console.log("CLICK CLICK ", firstName);
-  
-  let c_address = new Address(address," address", city, countryCode, postalcode)
-  let c_customer = new Customer(firstName,lastName,email,c_address);
 
-  console.log(c_customer);
-  const shema = `
-  mutation ($input: CustomerCreateInput!) {
-    customerCreate(input: $input) {
-      didSucceed
-      inputErrors {
-        code
-        message
-        path
-      }
-      customer {
-        id
-        name
-        firstName
-        lastName
-        email
-        address {
-          addressLine1
-          addressLine2
-          city
-          province {
-            code
-            name
-          }
-          country {
-            code
-            name
-          }
-          postalCode
-        }
-        currency {
-          code
-        }
-      }
-    }
-  }` 
-  
-  
-  
-
-  fetch('https://gql.waveapps.com/graphql/public', {
-    method: 'POST',
-    headers: {
-      'Authorization': token ? `Bearer ${token}` : "",
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      query: shema,
-      variables: { 
-        "input": {
-          "businessId": "QnVzaW5lc3M6MmU0YTUwMzQtYTI1Mi00ODY4LThkMTYtN2QzNDBjYmE0NzZi",
-          "name": c_customer.fullname,
-          "firstName": c_customer.getfirstame,
-          "lastName": c_customer.lastName,
-          "email": c_customer.email,
-          "address": {
-            "city":c_customer.address.city,
-            "postalCode": "90012",
-
-          },
-          "currency": "USD"
-        }}
-      })
-    })
-    .then(r => r.json())
-    .then(data => console.log(data));
-
-  }
   export default Wave;

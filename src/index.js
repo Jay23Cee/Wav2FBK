@@ -3,8 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+// You can choose your kind of history here (e.g. browserHistory)
+import { Router, hashHistory as history } from 'react-router';
+// Your routes.js file
+import Routers from './component/routers';
 
 ReactDOM.render(
+
   <React.StrictMode>
     <App />
   </React.StrictMode>,

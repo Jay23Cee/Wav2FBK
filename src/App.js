@@ -1,6 +1,9 @@
 import React from 'react';
-
+// import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import 'antd/dist/antd.css';
+import Register from './component/Register'
+import Success from "./component/Success"
 import './index.css';
 import { Layout, Menu, Breadcrumb } from 'antd';
 import {
@@ -11,9 +14,10 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 
+
 // import Facebook from './component/Facebook'
 
- import Wave from './component/Wave';
+
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -55,6 +59,8 @@ export default class App extends React.Component {
             </Menu.Item>
           </Menu>
         </Sider> 
+     
+
         <Layout className="site-layout">
           <Header className="site-layout-background" style={{ padding: 0 }} />
           <Content style={{ margin: '0 16px' }}>
@@ -62,14 +68,15 @@ export default class App extends React.Component {
               <Breadcrumb.Item>User</Breadcrumb.Item>
               <Breadcrumb.Item>Bill</Breadcrumb.Item>
             </Breadcrumb>
-            <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
-              Bill is a cat 
 
-              <Wave/>
-              
-           
-            </div>
+            <Router>
+    <Routes>
+     <Route path="/" element={<Register/>}></Route>
+     <Route path="/Success" element={<Success/>}></Route>
+    </Routes>
+           </Router>
           </Content>
+      
           <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
         </Layout>
       </Layout>
