@@ -6,6 +6,7 @@ import Register from './component/Register'
 import Success from "./component/Success"
 import './index.css';
 import { Layout, Menu, Breadcrumb } from 'antd';
+
 import {
   DesktopOutlined,
   PieChartOutlined,
@@ -15,17 +16,23 @@ import {
 } from '@ant-design/icons';
 
 
-// import Facebook from './component/Facebook'
 
 
+
+//The first 2 popular artists happen to be Picasso and Banksy. Thus, we pass in the argument "size" as 2. 
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
 export default class App extends React.Component {
-  state = {
-    collapsed: false,
-  };
+  
+  constructor(){
+    super();
+    this.state = {
+     products: ''
+    }
+   }
+  
 
   onCollapse = collapsed => {
     console.log(collapsed);
@@ -57,6 +64,7 @@ export default class App extends React.Component {
             <Menu.Item key="9" icon={<FileOutlined />}>
               Files
             </Menu.Item>
+        
           </Menu>
         </Sider> 
      
@@ -75,6 +83,7 @@ export default class App extends React.Component {
      <Route path="/Success" element={<Success/>}></Route>
     </Routes>
            </Router>
+
           </Content>
       
           <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
