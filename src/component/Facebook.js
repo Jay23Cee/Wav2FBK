@@ -67,9 +67,9 @@ fbContent = (
 }
 
 var userid = ""
-var accesstoken = "EAAdbFKpjrhYBAGDFuTQfj3pPrlTzvCghWAajyUMHhlpSW5TiPIouPyWqbWAnmkDJHn3w3qHiUjYL2TqeyVyeKj8Dv9uJ27mjZATfZAiVULVxEdeHtubBEmAnP9yg8Hy7cZACjq6Lad5aMII5PDCdnrtUVNPInp1k6m0v54fB6Ifz1LWAEfhs3tukcNhKaPdqj1ZBJ2HXuZAoHt30x0R3vKb4kvpawnwgvgLcTFlKk6Hmo3kopEgDgK80v0QPJ7ikZD"
+var accesstoken = "EAAdbFKpjrhYBAFFfWuVsyOvQAz5UqZA33xNtn0Dxp1D6HZCby9mSHAYOAfFqNZBmRJziR8rxPik8N2WtUoZAZAKZCewF6L8LdJlWDaiRKtGVYeljT81Qi8SSzYH8t7yUdxiZBK6O7AlHrOQukzIjswbNOlGDHkagdoa0MCix7iw7bQLqEQGZBuFkqmZCb5y6C83m3xaSm5gIqEiz0cqPvi0K1"
 
-var videoID = "1918597575014780"
+var videoID = "683760392975364"
 var live_url= "https://streaming-graph.facebook.com/"+videoID+"/live_comments?access_token=" + accesstoken+"&comment_rate=one_hundred_per_second&fields=from{name,id},message"
 
 var source = new EventSource(live_url);
@@ -80,14 +80,20 @@ source.onmessage = function(event) {
 
     
    // console.log("EVENT_: ", event)
-    console.log("Message:_ ", result["message"])
+    console.log("Message:_ ", result["message"], result["message"].search("#cute"))
+    let trigger_word =result["message"].search("#cute")
+
+    if (trigger_word > -1){
+        console.log("TRIGER WORD TRIGER WORD TRIGER WORD YAY")
+    }
+
 
   // userid = String( result["id"]).replace(videoID+"_", "")
 
   if (result["from"] != null){
     console.log("FROM ! !:", result["from"])
   }
-   console.log("type of data:", result )
+   console.log("type of data:", result, "type :", typeof result )
 
 
 

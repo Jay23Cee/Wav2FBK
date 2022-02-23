@@ -1,4 +1,5 @@
 import React from 'react';
+import Facebook from './Facebook';
 import Wave from './Wave';
     
 export default class Register extends React.Component { 
@@ -8,6 +9,7 @@ export default class Register extends React.Component {
 Bill is a cat 
 
 <Wave/>
+<Facebook/>
 
 
 </div>

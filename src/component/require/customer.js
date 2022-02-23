@@ -1,7 +1,7 @@
 export class Customer {
 
-    constructor(firstname, lastname, email,address) {
-        
+    constructor(firstname, lastname, email,address,id="") {
+        this.id = id;
         this._address = address;
         this._fullname = firstname + " "+lastname;
         this._firstname= firstname;

@@ -3,6 +3,7 @@ import TextField from '@mui/material/TextField';
 import {Customer, Address} from './require/customer';
 import createCustomer from "./require/customer";
 
+
 import $ from 'jquery';
 
 import {
@@ -16,7 +17,8 @@ import {
 import { setContext } from '@apollo/client/link/context';
 
 import Invoices from "./Invoices";
-import Products from "./Products";
+import {Products, Product} from "./Products";
+import {createInvoice, invoicesbycustomer , deleteInvoice}from "./Invoices";
 
 
 const token = 'zCtQa00zlorbFFum6I7Rlzc0QwMDoS';
@@ -44,7 +46,47 @@ const client = new ApolloClient({
 
 
 
-function Wave() {
+function  Wave(){
+  const [myitem, setitem] = useState(null);
+  const[cust, setcust] = useState(null)
+  const [itemid, setid]= useState('')
+  const [itemname,setitemname]= useState('')
+  const [itemprice,setprice]= useState('')
+
+
+  useEffect(() => {
+    // let x , y = Products();
+    // console.log("wave wave wave ", y , x)
+      Products().then((data, data2) => {
+    
+        setitem(data[0])
+        setcust(data[1])
+        
+      });
+
+      
+    }, []);
+
+   let name = ""
+   let item_id = ""
+  if (myitem != null) {
+  //   console.log(myitem, "MYITEM YAY ", typeof(myitem))
+  //   console.log(myitem.data["data"]["business"]["products"]["edges"][0]["node"]["name"], "MYITEM YAY ZERO  ", typeof(myitem[0]))
+  //   console.log(myitem.data["data"]["business"]["customers"]["edges"][0]["node"]["name"], "MYITEM YAY ZERO  ", typeof(myitem[0]))
+  //   name = myitem[0]
+  //console.log(myitem.get("Pencil Mickey").name)
+    name = myitem.get("Pencil Mickey").name
+    item_id = myitem.get("Pencil Mickey").id
+
+  }
+
+  let cust_name = ""
+  let cust_id =  ""
+  
+  if(cust != null){
+    cust_name = cust.get("Jack").name
+    cust_id =  cust.get("Jack").id
+  }
 
   const [firstName, setFirstName] = useState('');
   const  [lastName, setlastname]= useState('');
@@ -54,12 +96,16 @@ function Wave() {
   const  [postalCode, setpostalcode]= useState('');
   const  [countryCode, setcountrycode]= useState('');
 
+  
+ 
+
+
   return (
     <ApolloProvider client={client}>
       <div>
         <h2>WAVE Information Below 🚀</h2>
-
-      
+        {name}
+        
        <WaveData/>
   
      <br></br> Firstname
@@ -83,8 +129,14 @@ function Wave() {
       <button className="myButton" onClick={ ()=>{  createCustomer(firstName,lastName,email,address,city,postalCode,countryCode)
         }}>Create Customer</button>
 
-<button className="myProducts" onClick={ ()=>{  Products()
+<button className="myProducts" onClick={ ()=>{ //invoicesbycustomer()
+                                                  createInvoice(cust_id, item_id)
+
         }}>Get Products</button>
+
+<button className="DeleteInvoice" onClick={ ()=>{ deleteInvoice()//createInvoice(cust_id, item_id)
+
+}}>Delete Invoice</button>
         
 
         
@@ -118,10 +170,10 @@ function WaveData(){
       <div>
           <h1> WAVE APPS DATA</h1>
           <ul>
-            
+          
               <li key={data.user.id}> {data.user.firstName}</li>
               
-          
+           
 
               
                 
