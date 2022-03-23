@@ -12,6 +12,7 @@ import {
 } from '@ant-design/icons';
 
 import Facebook from './component/Facebook'
+import Wave from './component/Wave';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -64,6 +65,7 @@ export default class App extends React.Component {
               Bill is a cat.
 
             <Facebook/>
+            <Wave/>
               
             </div>
           </Content>

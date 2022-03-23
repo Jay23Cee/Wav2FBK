@@ -10,6 +10,8 @@ let itemlist = "";
 export const populatelist = (cl, il) => {
   customerslist = cl;
   itemlist = il;
+
+
 };
 
 export const fblive = async (liveid) => {
@@ -155,19 +157,17 @@ export default function Facebook() {
         onClick={() => {
           //readcomment(livecomment)
 
-          for (let x = 0; x < 3; x++) {
+          for (let x = 0; x < 1; x++) {
             // setTimeout(() => {
             //   readcomment(livecomment);
             // }, 10000);
 
-            let re = new Promise(resolve => setTimeout(setTimeout(async function(){
-               new Promise(resolve=> {readcomment( livecomment)}).then((data)=>console.log("after promise"));
-            }), 10000));
-            console.log(" calling LIVE FROM LOOP ", x);
-
+           
+              readcomment( livecomment)
+           
+               readcomment("#112 TREE HELLOW")
             //   readcomment("#112 TREE HELLOW")
-            //   readcomment("#112 TREE HELLOW")
-            //   readcomment("#113 TREE HELLOW")
+              readcomment("#113 TREE HELLOW")
           }
         }}
       >
@@ -201,7 +201,7 @@ let re = await new Promise(resolve=>setTimeout(setTimeout(async function(){
       console.log(remove, "WE ARE LOOKING AT RMOVE ");
 
      
-        comment_trigger(customer_found, item_found, remove)
+       await trigger_active(customer_found, item_found, remove)
   
     
     }
@@ -214,6 +214,7 @@ let re = await new Promise(resolve=>setTimeout(setTimeout(async function(){
 
 const findcust = (word_list) => {
   //if (list != null && word.length > 0) { }
+  console.log(customerslist)
   for (let word in word_list) {
     if (word_list[word].length > 2) {
       for (let [key] of customerslist) {
@@ -267,3 +268,8 @@ const find_remov = (word_list) => {
 
   return false;
 };
+
+
+const  trigger_active =async(customer_found, item_found, remove)=>{
+  await Promise(  comment_trigger(customer_found, item_found, remove))
+}
