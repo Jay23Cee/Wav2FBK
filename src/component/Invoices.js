@@ -5,7 +5,7 @@ import { ProvidedRequiredArgumentsRule } from "graphql";
 import { inputClasses } from "@mui/material";
 
 
-export const createInvoice = (inv) => {
+export const createInvoice = async(inv) => {
   // ADD item should ad items to invoice
   /** we add quantity here as well... by default all will be 1. */
 
@@ -138,7 +138,7 @@ export const createInvoice = (inv) => {
   }`;
 
     //About to submit my shema to waveapps
-    fetch("https://gql.waveapps.com/graphql/public", {
+    await fetch("https://gql.waveapps.com/graphql/public", {
       method: "POST",
       headers: {
         Authorization: token ? `Bearer ${token}` : "",
@@ -161,6 +161,7 @@ export const createInvoice = (inv) => {
   console.log("ADDED NEW ITEM TO INVOICE");
   
 };
+
 export const invoicesbycustomer = async (cust_id) => {
   try {
     const API_URL = "https://gql.waveapps.com/graphql/public";
@@ -315,7 +316,7 @@ query($businessId: ID!, $page: Int!, $pageSize: Int!, $customerId: ID!) {
       response.data.data.business.invoices.edges[0].node.id
     );
 
-    return Promise.resolve(response.data.data.business.invoices.edges);
+    return await Promise.resolve(response.data.data.business.invoices.edges);
   } catch (err) {
     console.log(err.message);
   
@@ -324,9 +325,7 @@ query($businessId: ID!, $page: Int!, $pageSize: Int!, $customerId: ID!) {
 
 
 
-
-
-export const deleteInvoice = (id) => {
+export const deleteInvoice = async(id) => {
   const invoiceId = id;
   const token = "zCtQa00zlorbFFum6I7Rlzc0QwMDoS";
   const shema = ` 
@@ -344,7 +343,7 @@ export const deleteInvoice = (id) => {
 
   //About to submit my shema to waveapps
   const bussID = "QnVzaW5lc3M6ZTIyZmVhODEtNjg5OC00N2ZiLTgzOGItYWMyYzllNDZiM2Jk";
-  fetch("https://gql.waveapps.com/graphql/public", {
+  await fetch("https://gql.waveapps.com/graphql/public", {
     method: "POST",
     headers: {
       Authorization: token ? `Bearer ${token}` : "",
@@ -366,15 +365,7 @@ export const deleteInvoice = (id) => {
   return "return invoice";
 };
 
-export const addItemInvoice = (inv) => {
-  // ADD item should ad items to invoice
-  /** we add quantity here as well... by default all will be 1. */
-
-  /**NEED TO HAVE
-   *  1. Invoice ID
-   *  2. CUSTOMER ID.
-   *  3. ITEM NAME? ID? SOMETHING.
-   */
+export const addItemInvoice = async(inv) => {
 
   console.log("CREATE add item INVOICE WELCOME");
 
@@ -499,7 +490,7 @@ export const addItemInvoice = (inv) => {
   }`;
 
     //About to submit my shema to waveapps
-    fetch("https://gql.waveapps.com/graphql/public", {
+    await fetch("https://gql.waveapps.com/graphql/public", {
       method: "POST",
       headers: {
         Authorization: token ? `Bearer ${token}` : "",
@@ -526,14 +517,6 @@ export const addItemInvoice = (inv) => {
 };
 
 export const removeItemInvoice = (inv) => {
-  // ADD item should ad items to invoice
-  /** we add quantity here as well... by default all will be 1. */
-
-  /**NEED TO HAVE
-   *  1. Invoice ID
-   *  2. CUSTOMER ID.
-   *  3. ITEM NAME? ID? SOMETHING.
-   */
 
   console.log("REMOVE ITEM");
 
@@ -679,6 +662,7 @@ export const removeItemInvoice = (inv) => {
   console.log("REMOVE ITEM INV TO INVOICE");
   return "invoices";
 };
+
 export class Invoice {
   constructor(inv_id, customer) {
     this._id = inv_id;
@@ -687,7 +671,7 @@ export class Invoice {
   }
 
   addItem(prod) {
-    // console.log("THIS IS PRODA ADDINTEM",prod, "||", prod.length,"THIS IS PRODA ADDINTEM", prod.length !==0)
+    
 
     if (prod.length !== 0) {
       //   console.log("REALLY ADDING NEW ITEMS")
@@ -701,13 +685,7 @@ export class Invoice {
 
 
   removeitem(prod) {
-    // we need to find the ITEM FIRST. IT'S ID.
-    // LOOK FOR THAT ID in the INVOICE ID.
-    // IF ID is found in the INVOICE items ID.
-    // remove that item from .  (( change qty will be later))
 
-    // we need to find the item.
-    // we change the qty of this item.
     console.log(this.items, "this is prod");
     let found = false;
     if (prod.length !== 0) {
@@ -809,41 +787,7 @@ export class Invoice {
     }
   }
 
-  // removesqty(prod, newqty = 1) {
-  //   // we need to find the item.
-  //   // we change the qty of this item.
-  //   console.log(this.items, "this is prod");
-  //   let updateitem;
-  //   let found = false;
-  //   if (prod.length !== 0) {
-  //     // let newlist = this._items.pop(prod.id)
-  //     //  console.log(newlist, "New list removed")
-  //     let newlist = this._items.filter(function (obj) {
-  //       if (found == false) {
-  //         console.log(obj.productId, " THIS IS OBJ ID");
-  //         console.log(prod.id, "This is PROD ID");
-  //         if (obj.productId == prod.id) {
-  //           found = true;
-  //           updateitem = obj;
-  //         }
-  //         return obj.productId !== prod.id;
-  //       } else {
-  //         console.log("else active");
-  //         return true;
-  //       }
-  //     });
 
-  //     // adding qty to the item needing to update
-  //     let num = parseFloat(updateitem.quantity) - newqty;
-  //     console.log(num);
-  //     if (num > 0) {
-  //       updateitem.quantity = num;
-  //       newlist.push(updateitem);
-  //     }
-
-  //     this._items = newlist;
-  //   }
-  // }
 
   get id() {
     return this._id;
