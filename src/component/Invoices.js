@@ -138,13 +138,13 @@ export const createInvoice = async(inv) => {
   }`;
 
     //About to submit my shema to waveapps
-    await fetch("https://gql.waveapps.com/graphql/public", {
+    await axios("https://gql.waveapps.com/graphql/public", {
       method: "POST",
       headers: {
         Authorization: token ? `Bearer ${token}` : "",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
+      data: {
         query: shema,
         variables: {
           input: {
@@ -153,11 +153,14 @@ export const createInvoice = async(inv) => {
             items:inv.items,
           },
         },
-      }),
+      },
     })
       .then((r) => r.json())
       .then((data) => console.log(data, "ADD ITEM INV"));
-  } catch (error) {}
+  } catch (error) {
+    console.log(error)
+    console.error(error.response.data)
+  }
   console.log("ADDED NEW ITEM TO INVOICE");
   
 };
