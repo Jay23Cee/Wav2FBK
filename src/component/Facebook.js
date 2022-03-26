@@ -3,15 +3,16 @@ import { useState } from "react";
 import { useEffect } from "react";
 import FacebookLogin from "react-facebook-login";
 import TextField from "@mui/material/TextField";
-import additem, { comment_trigger } from "./Wave";
+import additem, { comment_trigger, getData } from "./Wave";
+import { get } from "jquery";
 
 let customerslist = "";
 let itemlist = "";
-export const populatelist = (cl, il) => {
-  customerslist = cl;
-  itemlist = il;
-
-
+export const populatelist = async () => {
+  await getData().then((data) => {
+    itemlist = data[0];
+    customerslist = data[1];
+  });
 };
 
 export const fblive = async (liveid) => {
@@ -52,7 +53,7 @@ export const fblive = async (liveid) => {
           if (result["from"] != null) {
             console.log("FROM ! !:", result["from"]);
           }
-          console.log("type of data:", result, "type :", typeof "😀");
+          
         };
       } else {
         console.log("ZERO FOUND");
@@ -155,19 +156,18 @@ export default function Facebook() {
       <button
         className="videoUrl"
         onClick={() => {
-          //readcomment(livecomment)
-
+         
+          // sending multiple request.  
           for (let x = 0; x < 1; x++) {
-            // setTimeout(() => {
-            //   readcomment(livecomment);
-            // }, 10000);
+       
+            readcomment(livecomment);
 
-           
-              readcomment( livecomment)
-           
-               readcomment("#112 TREE HELLOW")
-            //   readcomment("#112 TREE HELLOW")
-              readcomment("#113 TREE HELLOW")
+            readcomment("#112 TREE HELLOW");
+
+            readcomment(livecomment);
+
+            readcomment("#112 TREE HELLOW");
+    
           }
         }}
       >
@@ -178,14 +178,12 @@ export default function Facebook() {
 }
 
 export const readcomment = async (the_comment) => {
-
-let re = await new Promise(resolve=>setTimeout(setTimeout(async function(){
-
   console.log(" CALLING LIVE READ COMMENT ", 0);
 
   console.log(the_comment);
 
   if (the_comment.includes("#")) {
+    await populatelist();
     let new_string = the_comment.trim().split(" ");
     console.log(new_string, " STRING SPLIT");
 
@@ -200,21 +198,21 @@ let re = await new Promise(resolve=>setTimeout(setTimeout(async function(){
       let remove = await find_remov(new_string);
       console.log(remove, "WE ARE LOOKING AT RMOVE ");
 
-     
-       await trigger_active(customer_found, item_found, remove)
-  
-    
+      let re = await new Promise((resolve) =>
+        setTimeout(
+          setTimeout(async function () {
+            await trigger_active(customer_found, item_found, remove);
+          }, 2000)
+        )
+      );
     }
   }
-},8000)))
-
-
-
 };
 
-const findcust = (word_list) => {
+const findcust = async (word_list) => {
   //if (list != null && word.length > 0) { }
-  console.log(customerslist)
+
+  console.log(customerslist);
   for (let word in word_list) {
     if (word_list[word].length > 2) {
       for (let [key] of customerslist) {
@@ -269,7 +267,21 @@ const find_remov = (word_list) => {
   return false;
 };
 
+const trigger_active = async (customer_found, item_found, remove) => {
+  let re = await new Promise((resolve) =>
+    setTimeout(
+      setTimeout(async function () {
+        try {
+          await comment_trigger(customer_found, item_found, remove);
+          return Promise.resolve("Complete trigger.")
+        } catch (error) {
+          console.error(error)
+          
+        }
+      }, 9000)
+    )
+  );
+};
 
-const  trigger_active =async(customer_found, item_found, remove)=>{
-  await Promise(  comment_trigger(customer_found, item_found, remove))
-}
+
+
