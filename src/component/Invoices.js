@@ -158,8 +158,8 @@ export const createInvoice = async(inv) => {
       .then((r) => r.json())
       .then((data) => console.log(data, "ADD ITEM INV"));
   } catch (error) {
-    console.log(error)
-    console.error(error.response.data)
+    console.log(error.response)
+  
   }
   console.log("ADDED NEW ITEM TO INVOICE");
   
@@ -167,6 +167,7 @@ export const createInvoice = async(inv) => {
 
 export const invoicesbycustomer = async (cust_id) => {
   try {
+    console.log(cust_id.id)
     const API_URL = "https://gql.waveapps.com/graphql/public";
     const bussID =
       "QnVzaW5lc3M6ZTIyZmVhODEtNjg5OC00N2ZiLTgzOGItYWMyYzllNDZiM2Jk";
@@ -305,10 +306,13 @@ query($businessId: ID!, $page: Int!, $pageSize: Int!, $customerId: ID!) {
       data: {
         query: shema,
         variables: {
-          businessId: bussID,
-          page: 1,
-          pageSize: 20,
-          customerId: cust_id,
+      
+
+            businessId: bussID,
+            page: 1,
+            pageSize: 20,
+            customerId: cust_id.id,
+         
         },
       },
     });
@@ -316,12 +320,12 @@ query($businessId: ID!, $page: Int!, $pageSize: Int!, $customerId: ID!) {
     //console.log(response, "GETTING GETTING INVOICE BY CUSTOMER!!!!!!!!!!!\n!!!!!!!!!!!!!!!")
     console.log(
       "splitting the invoices.",
-      response.data.data.business.invoices.edges[0].node.id
+      response
     );
 
     return await Promise.resolve(response.data.data.business.invoices.edges);
   } catch (err) {
-    console.log(err.message);
+    console.log(err.response);
   
   }
 };
@@ -346,26 +350,25 @@ export const deleteInvoice = async(id) => {
 
   //About to submit my shema to waveapps
   const bussID = "QnVzaW5lc3M6ZTIyZmVhODEtNjg5OC00N2ZiLTgzOGItYWMyYzllNDZiM2Jk";
-  await fetch("https://gql.waveapps.com/graphql/public", {
+  await axios("https://gql.waveapps.com/graphql/public", {
     method: "POST",
     headers: {
       Authorization: token ? `Bearer ${token}` : "",
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
+    body:{
       query: shema,
       variables: {
-        input: {
+        
           invoiceId: invoiceId,
-        },
+        
       },
-    }),
+    },
   })
-    .then((r) => r.json())
-    .then((data) => console.log(data));
+
 
   //console.log("return delete invoice complete")
-  return "return invoice";
+  
 };
 
 export const addItemInvoice = async(inv) => {
@@ -493,22 +496,22 @@ export const addItemInvoice = async(inv) => {
   }`;
 
     //About to submit my shema to waveapps
-    await fetch("https://gql.waveapps.com/graphql/public", {
+    await axios("https://gql.waveapps.com/graphql/public", {
       method: "POST",
       headers: {
         Authorization: token ? `Bearer ${token}` : "",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
+      body: {
         query: shema,
         variables: {
-          input: {
+         
             businessId: bussID,
             customerId: inv.customer,
             items: inv.items,
-          },
+         
         },
-      }),
+      },
     })
       .then((r) => r.json())
       .then((data) => console.log(data, "ADD ITEM INV"));
@@ -519,7 +522,7 @@ export const addItemInvoice = async(inv) => {
   return "invoices";
 };
 
-export const removeItemInvoice = (inv) => {
+export const removeItemInvoice = async(inv) => {
 
   console.log("REMOVE ITEM");
 
