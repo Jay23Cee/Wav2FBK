@@ -1,4 +1,7 @@
 
+3/24/2022
+iTEMS are being created but there's a promise not being caught somewhere. 
+----------------------------------
 3/21/2022
 Need to make function handle multiple calls.
 await is not working and new promise is not working.
