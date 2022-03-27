@@ -9,10 +9,9 @@ import { get } from "jquery";
 let customerslist = "";
 let itemlist = "";
 export const populatelist = async () => {
-  await getData().then((data) => {
-    itemlist = data[0];
-    customerslist = data[1];
-  });
+ let [itemlist1, customer_list1]= await getData()
+itemlist= itemlist1
+customerslist=customer_list1
 };
 
 export const fblive = async (liveid) => {
@@ -159,14 +158,14 @@ export default function Facebook() {
          
           // sending multiple request.  
           for (let x = 0; x < 1; x++) {
-       
+            
             readcomment(livecomment);
 
             readcomment("#112 TREE HELLOW");
 
-            readcomment(livecomment);
+             readcomment(livecomment);
 
-            readcomment("#112 TREE HELLOW");
+            // readcomment("#112 TREE HELLOW");
     
           }
         }}
@@ -178,38 +177,47 @@ export default function Facebook() {
 }
 
 export const readcomment = async (the_comment) => {
-  console.log(" CALLING LIVE READ COMMENT ", 0);
+  console.log(" CALLING LIVE READ COMMENT ", the_comment);
+  let re = await new Promise((resolve) =>
+  setTimeout(
+    setTimeout(async function () {
+      
+      console.log(the_comment);
+      
+      if (the_comment.includes("#")) {
+        populatelist();
+        console.log(the_comment);
 
-  console.log(the_comment);
+        let new_string = the_comment.trim().split(" ");
+        console.log(new_string, " STRING SPLIT");
+        
+        let customer_found = await findcust(new_string);
+        let item_found = await finditem(new_string);
+        
+        console.log(customer_found, item_found, "WE FOUND ");
+        
+        if (customer_found != false && item_found != false) {
+          console.log("THERE'S A TRIGGER SALE HERE");
+          
+          let remove = await find_remov(new_string);
+          console.log(remove, "WE ARE LOOKING AT RMOVE ");
+          let re = await  Promise.all([populatelist,findcust(new_string),finditem(new_string),find_remov(new_string)]).then(async(values)=>{
+        console.log(the_comment)
+        await trigger_active(customer_found,item_found,remove)
+        console.log("promise for " , the_comment, " has been fullfilled", values)
 
-  if (the_comment.includes("#")) {
-    await populatelist();
-    let new_string = the_comment.trim().split(" ");
-    console.log(new_string, " STRING SPLIT");
+      })
 
-    let customer_found = await findcust(new_string);
-    let item_found = await finditem(new_string);
 
-    console.log(customer_found, item_found, "WE FOUND ");
-
-    if (customer_found != false && item_found != false) {
-      console.log("THERE'S A TRIGGER SALE HERE");
-
-      let remove = await find_remov(new_string);
-      console.log(remove, "WE ARE LOOKING AT RMOVE ");
-
-      let re = await new Promise((resolve) =>
-        setTimeout(
-          setTimeout(async function () {
-            await trigger_active(customer_found, item_found, remove);
-          }, 2000)
-        )
-      );
     }
   }
+}, 2000)
+)
+);
+  
 };
 
-const findcust = async (word_list) => {
+export const findcust = async (word_list) => {
   //if (list != null && word.length > 0) { }
 
   console.log(customerslist);
@@ -275,7 +283,7 @@ const trigger_active = async (customer_found, item_found, remove) => {
           await comment_trigger(customer_found, item_found, remove);
           return Promise.resolve("Complete trigger.")
         } catch (error) {
-          console.error(error)
+          console.error(error.response.data)
           
         }
       }, 9000)

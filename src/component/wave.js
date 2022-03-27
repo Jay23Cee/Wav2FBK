@@ -4,7 +4,7 @@ import { Customer, Address } from "./customer";
 import createCustomer from "./customer";
 import { addItemInvoice, Invoice } from "./Invoices";
 import { fblive, populatelist } from "./Facebook";
-import { findcust } from "./require/getwaves";
+import { findcust } from "./Facebook";
 import axios from "axios";
 import $ from "jquery";
 
@@ -96,7 +96,7 @@ function Wave() {
   return (
     <ApolloProvider client={client}>
       <div>
-        {/* <h2>WAVE Information Below 🚀</h2>
+        <h2>WAVE Information Below 🚀</h2>
         {name}
         <WaveData />
         <br></br> Firstname
@@ -203,8 +203,14 @@ function Wave() {
         </button>
         <button
           className="myINV"
-          onClick={() => {
-            let re = invoicesbycustomer(find("Jack", customer_list));
+          onClick={async() => {
+            let new_string = customerSearch.trim().split(" ");
+            console.log(new_string, " STRING SPLIT");
+            let cus = await findcust(["jack","early"])
+            let real_cus = find(cus,customer_list)
+            console.log(cus)
+            console.log(real_cus)
+            let re = await invoicesbycustomer(real_cus.id);
             console.log(re)
           }}
         >
@@ -234,17 +240,20 @@ function Wave() {
           onClick={() => {
             // let update = additems();// This needs customer id to be send.
 
-            let inv = invoicesbycustomer(customer_list.get("Jack").id);
+            console.log(customerSearch)
+            let cus = findcust(customerSearch)
+            console.log(cus)
+            let inv = invoicesbycustomer(cus.id);
 
-            //console.log("GETTING CUSTOMERS ID", inv)
-            inv.then((data) => {
+            console.log("GETTING CUSTOMERS ID", inv)
+            
               //console.log(data[0].node.items, "here inside additems")
               let NewInvoice = new Invoice(
-                data[0].node.id,
-                data[0].node.customer.id
+                inv[0].node.id,
+                inv[0].node.customer.id
               );
-              deleteInvoice(data[0].node.id);
-            });
+              deleteInvoice(inv[0].node.id);
+          
           }}
         >
           Delete Invoice
@@ -304,7 +313,7 @@ function Wave() {
           }}
         >
           COMMENT TRIGGER
-        </button> */}
+        </button>
       </div>
     </ApolloProvider>
   );
@@ -342,7 +351,9 @@ function WaveData() {
 /// RECEIVE COMMENT TRIGGER
 export const comment_trigger = async (customer, item, rmv) => {
   // FIND THE ITEM IN INVOICE.
+  let re = await new Promise(async(resolve) =>{
 
+ 
 
   const client = find(customer, customer_list1);
   const real_item = find(item, item_list1);
@@ -352,7 +363,7 @@ export const comment_trigger = async (customer, item, rmv) => {
       let inv = await invoicesbycustomer(client.id);
       console.log(inv);
 
-      if (inv == undefined) {
+      if (inv == undefined || inv.length ==0) {
         console.log(customer, item);
         console.log(real_item.id);
         let new_Invoice = new Invoice("", client);
@@ -399,7 +410,8 @@ export const comment_trigger = async (customer, item, rmv) => {
                 await removeitem(customer, item);
                 console.log("Item has been removed");
               } else if (found) {
-                await addqtyitem(customer, item);
+                let aqi = await addqtyitem(customer, item);
+                console.log(aqi)
                 console.log("It has added a qty");
               } else {
                 // add item
@@ -430,6 +442,9 @@ export const comment_trigger = async (customer, item, rmv) => {
     console.log("THERE WAS AN ERROR SOMEWHERE YOO. " )
     console.error(error.response.data)
   }
+
+}
+)
 };
 
 //// ADD ITEM
@@ -453,15 +468,16 @@ const additems = async (customer, item, qty = 1) => {
       //console.log(addproduct, "NEW PRODU id -==", cl.get('Jack').id)
       let inv = await invoicesbycustomer(client.id);
 
+      console.log(inv)
       //console.log("GETTING CUSTOMERS ID", inv)
-      inv.then(async (data) => {
+  
         //console.log("before new invoice",data)
-        console.log(data, " THIS IS INV ADD ITEM ONLY NO QTY");
-        let oldItems = data[0].node.items;
+        console.log(inv, " THIS IS INV ADD ITEM ONLY NO QTY");
+        let oldItems = inv[0].node.items;
 
-        console.log("DATA TYPE IS ", typeof data);
+        console.log("DATA TYPE IS ", typeof inv);
 
-        let NewInvoice = new Invoice(data[0].node.id, data[0].node.customer.id);
+        let NewInvoice = new Invoice(inv[0].node.id, inv[0].node.customer.id);
         let Itemsize = oldItems.length;
         if (Itemsize > 0) {
           for (let x = 0; x < Itemsize; x++) {
@@ -479,9 +495,9 @@ const additems = async (customer, item, qty = 1) => {
         await NewInvoice.addItem(addproduct);
 
         //console.log("this is the LAST INV TO BE SAVE", NewInvoice)
-        await addItemInvoice(NewInvoice);
+        await createInvoice(NewInvoice);
         await deleteInvoice(NewInvoice.id);
-      });
+    
       console.log("PRODUCT ADDED. NO QTY");
     } else {
       console.error("Client or Product are not valid");
@@ -504,17 +520,16 @@ const addqtyitem = async (customer, item, qty = 1) => {
     console.log(client, real_item);
     if (client != false && real_item != false) {
       let inv = await invoicesbycustomer(client.id);
-
-      inv.then(async (data) => {
+   
         //console.log("before new invoice",data)
-        if (typeof data !== "undefined") {
-          console.log("inv is NOT underfine yall", data);
+        if (typeof inv !== "undefined") {
+          console.log("inv is NOT underfine yall", inv);
 
-          console.log(data, "THIS IS INVOICE WITH CLIENT");
-          let oldItems = data[0].node.items;
+          console.log(inv, "THIS IS INVOICE WITH CLIENT");
+          let oldItems = inv[0].node.items;
           let NewInvoice = new Invoice(
-            data[0].node.id,
-            data[0].node.customer.id
+            inv[0].node.id,
+            inv[0].node.customer.id
           );
           let Itemsize = oldItems.length;
           if (Itemsize > 0) {
@@ -533,8 +548,10 @@ const addqtyitem = async (customer, item, qty = 1) => {
 
           // adding the new invoice
           await addItemInvoice(NewInvoice);
+          console.log("Created INVOICE FOR ", customer)
           //Removing old invoice
           await deleteInvoice(NewInvoice.id);
+          console.log("Delete previous", customer)
           console.log("Item qty has been added");
         } else {
           // IF NO INVOICE HAS BEEN CREATED ONE IS CREATED AND ITEMS ADDED
@@ -546,7 +563,7 @@ const addqtyitem = async (customer, item, qty = 1) => {
           await additems(customer, item);
           console.log("INVOICE CREATED AND ADDED ITEM");
         }
-      });
+     
     } else {
       let errmssg = "";
 
@@ -618,11 +635,11 @@ export const removeitem = (customer, item) => {
       let inv = invoicesbycustomer(client.id);
 
       //console.log("GETTING CUSTOMERS ID", inv)
-      inv.then((data) => {
+     
         //console.log("before new invoice",data)
 
-        let oldItems = data[0].node.items;
-        let NewInvoice = new Invoice(data[0].node.id, data[0].node.customer.id);
+        let oldItems = inv[0].node.items;
+        let NewInvoice = new Invoice(inv[0].node.id, inv[0].node.customer.id);
         let Itemsize = oldItems.length;
         if (Itemsize > 0) {
           for (let x = 0; x < Itemsize; x++) {
@@ -641,9 +658,9 @@ export const removeitem = (customer, item) => {
         NewInvoice.removeitem(real_item);
         //console.log("this is the LAST INV TO BE SAVE", NewInvoice)
         console.log(NewInvoice, "ITEM SHOULD HAVE BEEN REMOVED.");
-        addItemInvoice(NewInvoice);
+        createInvoice(NewInvoice);
         deleteInvoice(NewInvoice.id);
-      });
+      
       console.log("INSIDE if");
     } else {
       console.error("Client or Product are not valid");
@@ -748,10 +765,10 @@ export const getData = async () => {
     },
   });
   //   list = response.data["data"]["business"]["products"]["edges"]
-
-  let prod_size = response.data["data"]["business"]["products"]["edges"].length;
-  let prod = response.data["data"]["business"]["products"]["edges"];
-
+console.log(response)
+  let prod_size = response.data.data.business.products.edges.length;
+  let prod = response.data.data.business.products.edges
+console.log(prod_size)
   for (let x = 0; x < prod_size; x++) {
     let name = prod[x]["node"]["name"];
     let id = prod[x]["node"]["id"];
@@ -775,7 +792,7 @@ export const getData = async () => {
     customer_list.set(key, temp_cust);
   }
 
-  return [Product_list, customer_list];
+  return Promise.resolve([Product_list, customer_list]);
   //return [Promise.resolve(Product_list), Promise.resolve(customer_list)]
 };
 

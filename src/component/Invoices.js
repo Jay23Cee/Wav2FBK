@@ -155,8 +155,7 @@ export const createInvoice = async(inv) => {
         },
       },
     })
-      .then((r) => r.json())
-      .then((data) => console.log(data, "ADD ITEM INV"));
+ 
   } catch (error) {
     console.log(error.response)
   
@@ -167,7 +166,7 @@ export const createInvoice = async(inv) => {
 
 export const invoicesbycustomer = async (cust_id) => {
   try {
-    console.log(cust_id.id)
+    console.log(cust_id)
     const API_URL = "https://gql.waveapps.com/graphql/public";
     const bussID =
       "QnVzaW5lc3M6ZTIyZmVhODEtNjg5OC00N2ZiLTgzOGItYWMyYzllNDZiM2Jk";
@@ -311,7 +310,7 @@ query($businessId: ID!, $page: Int!, $pageSize: Int!, $customerId: ID!) {
             businessId: bussID,
             page: 1,
             pageSize: 20,
-            customerId: cust_id.id,
+            customerId: cust_id,
          
         },
       },
@@ -334,6 +333,10 @@ query($businessId: ID!, $page: Int!, $pageSize: Int!, $customerId: ID!) {
 
 export const deleteInvoice = async(id) => {
   const invoiceId = id;
+  console.log(invoiceId, "THIS I S INVOICE DELET EDELETE DELETE DELTE ")
+
+  try {
+
   const token = "zCtQa00zlorbFFum6I7Rlzc0QwMDoS";
   const shema = ` 
   mutation ($input: InvoiceDeleteInput !) {
@@ -349,31 +352,45 @@ export const deleteInvoice = async(id) => {
   }`;
 
   //About to submit my shema to waveapps
+  const API_URL="https://gql.waveapps.com/graphql/public"
   const bussID = "QnVzaW5lc3M6ZTIyZmVhODEtNjg5OC00N2ZiLTgzOGItYWMyYzllNDZiM2Jk";
-  await axios("https://gql.waveapps.com/graphql/public", {
+  let watch = await axios(API_URL, {
     method: "POST",
     headers: {
       Authorization: token ? `Bearer ${token}` : "",
       "Content-Type": "application/json",
     },
-    body:{
+    data:{
       query: shema,
       variables: {
-        
+        input:{
+
           invoiceId: invoiceId,
+        }
         
       },
     },
   })
 
-
+    console.log(watch.data)
+} catch (error) {
+    console.log(error.response)
+}
   //console.log("return delete invoice complete")
   
 };
-
 export const addItemInvoice = async(inv) => {
+  // ADD item should ad items to invoice
+  /** we add quantity here as well... by default all will be 1. */
 
-  console.log("CREATE add item INVOICE WELCOME");
+  /**NEED TO HAVE
+   *  1. Invoice ID
+   *  2. CUSTOMER ID.
+   *  3. ITEM NAME? ID? SOMETHING.
+   */
+
+  console.log("CREATE add item INVOICE WELCOME", inv, inv.items);
+
 
   try {
     const bussID =
@@ -502,25 +519,178 @@ export const addItemInvoice = async(inv) => {
         Authorization: token ? `Bearer ${token}` : "",
         "Content-Type": "application/json",
       },
-      body: {
+      data: {
         query: shema,
         variables: {
-         
+          input: {
             businessId: bussID,
             customerId: inv.customer,
-            items: inv.items,
-         
+            items:inv.items,
+          },
         },
       },
     })
-      .then((r) => r.json())
-      .then((data) => console.log(data, "ADD ITEM INV"));
-  } catch (err) {
-    console.log(err, "522 error invoice")
+ 
+  } catch (error) {
+    console.log(error.response)
+  
   }
   console.log("ADDED NEW ITEM TO INVOICE");
-  return "invoices";
+  
 };
+// export const addItemInvoice = async(inv) => {
+//   const API_URL = "https://gql.waveapps.com/graphql/public";
+//   console.log("CREATE add item INVOICE WELCOME");
+//   console.log(inv.customer, " 377 INV DATA ", inv.items)
+
+//   try {
+//     const bussID =
+//       "QnVzaW5lc3M6ZTIyZmVhODEtNjg5OC00N2ZiLTgzOGItYWMyYzllNDZiM2Jk";
+//     const token = "zCtQa00zlorbFFum6I7Rlzc0QwMDoS";
+//     const shema = ` 
+//   mutation ($input: InvoiceCreateInput!) {
+//       invoiceCreate(input: $input) {
+//           didSucceed
+//           inputErrors {
+//               message
+//               code
+//               path
+//           }
+//           invoice {
+//               id
+//               createdAt
+//               modifiedAt
+//               pdfUrl
+//               viewUrl
+//               status
+//               title
+//               subhead
+//               invoiceNumber
+//               invoiceDate
+//               poNumber
+//               customer {
+//                   id
+//                   name
+//                   # Can add additional customer fields here
+//               }
+//               currency {
+//                   code
+//               }
+//               dueDate
+//               amountDue {
+//                   value
+//                   currency {
+//                       symbol
+//                   }
+//               }
+//               amountPaid {
+//                   value
+//                   currency {
+//                       symbol
+//                   }
+//               }
+//               taxTotal {
+//                   value
+//                   currency {
+//                       symbol
+//                   }
+//               }
+//               total {
+//                   value
+//                   currency {
+//                       symbol
+//                   }
+//               }
+//               exchangeRate
+//               footer
+//               memo
+//               disableCreditCardPayments
+//               disableBankPayments
+//               itemTitle
+//               unitTitle
+//               priceTitle
+//               amountTitle
+//               hideName
+//               hideDescription
+//               hideUnit
+//               hidePrice
+//               hideAmount
+//               items {
+//                   product {
+//                       id
+//                       name
+//                       # Can add additional product fields here
+//                   }
+//                   description
+//                   quantity
+//                   price
+//                   subtotal {
+//                       value
+//                       currency {
+//                           symbol
+//                       }
+//                   }
+//                   total {
+//                       value
+//                       currency {
+//                           symbol
+//                       }
+//                   }
+//                   account {
+//                       id
+//                       name
+//                       subtype {
+//                           name
+//                           value
+//                       }
+//                       # Can add additional account fields here
+//                   }
+//                   taxes {
+//                       amount {
+//                           value
+//                       }
+//                       salesTax {
+//                           id
+//                           name
+//                           # Can add additional sales tax fields here
+//                       }
+//                   }
+//               }
+//               lastSentAt
+//               lastSentVia
+//               lastViewedAt
+//           }
+//       }
+//   }`;
+
+//     //About to submit my shema to waveapps
+//     await axios(API_URL, {
+//       method: "POST",
+//       headers: {
+//         Authorization: token ? `Bearer ${token}` : "",
+//         "Content-Type": "application/json",
+//       },
+//       body: {
+//         query: shema,
+//         variables: {
+//           input:{ 
+
+//             businessId: bussID,
+//             customerId: inv.customer,
+//             items: inv.items
+//           },
+        
+//         },
+//       },
+//     })
+      
+//   } catch (err) {
+//     console.log(err.response)
+//     console.log(err.response, "522 error invoice")
+//   }
+//   console.log("ADDED NEW ITEM TO INVOICE");
+//   return "invoices";
+// };
 
 export const removeItemInvoice = async(inv) => {
 
@@ -662,8 +832,6 @@ export const removeItemInvoice = async(inv) => {
       },
     }),
   })
-    .then((r) => r.json())
-    .then((data) => console.log(data, "removed item in INV"));
 
   console.log("REMOVE ITEM INV TO INVOICE");
   return "invoices";
