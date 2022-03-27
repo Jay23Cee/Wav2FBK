@@ -15,11 +15,16 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 
+<<<<<<< HEAD
 
 
 
 
 //The first 2 popular artists happen to be Picasso and Banksy. Thus, we pass in the argument "size" as 2. 
+=======
+import Facebook from './component/Facebook'
+import Wave from './component/Wave';
+>>>>>>> fb/api
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -77,6 +82,7 @@ export default class App extends React.Component {
               <Breadcrumb.Item>Bill</Breadcrumb.Item>
             </Breadcrumb>
 
+<<<<<<< HEAD
             <Router>
     <Routes>
      <Route path="/" element={<Register/>}></Route>
@@ -84,6 +90,12 @@ export default class App extends React.Component {
     </Routes>
            </Router>
 
+=======
+            <Facebook/>
+            <Wave/>
+              
+            </div>
+>>>>>>> fb/api
           </Content>
       
           <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>

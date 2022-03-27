@@ -1,3 +1,227 @@
+<<<<<<< HEAD
+=======
+
+3/24/2022
+iTEMS are being created but there's a promise not being caught somewhere. 
+----------------------------------
+3/21/2022
+Need to make function handle multiple calls.
+await is not working and new promise is not working.
+==============================================
+3/20/2022
+
+CREATING INVOICE. 
+    []Items not on invoice need to be added.
+   [] If item exist add qty.
+    []if it doesn't exist. Add this new Item.
+
+    []Validate New invoice been created before deleting the previos one.
+
+    []Need to find a query every function. and respond in due time.
+
+/////////////////////
+
+3/16/2022
+
+Solve the THEN data to fin if customer is already using this email.
+Turns out all i needed was the "AWAIT" function. and made that function a sync function as well.
+
+Now we need a better form and a way to  make sure only emails are added to email.
+possibly confirm address?
+[x] Need Validations EMAIL
+[No] Need Validations ADDRESS.
+[No] FORM TEMPLATE with hash
+[nO] USE THE .ENV 
+
+[Done]START LOOKING FOR A TEMPLATES
+
+
+-------------------------------------------------
+3/15/2022
+
+THEN DATA in FINDCUST is being callback after the function has been used
+
+---------------------------------------
+3/14/2022
+
+Completed Customer Varified Email.
+
+NEED TO HASH THE FORM. look for a better form template
+
+Needs to improve in organizing functions.
+
+Needs Futher Testing.
+
+NEED TO REMOVE THE API , TOKEN, URL from here and include to .ENV.
+
+THEN DATA. 
+
+--------------------------------------
+3/13/2022
+
+Looking into making sure CUSTOMERS are varified by EMAIL.
+EMAILS check is almost completed 
+
+---------------------------------------
+3/11/2022
+
+Customers need need no duplicates allow.
+possible by email. If same email ahs been reported.. no creation. deny ..
+
+
+
+------------------------------------------------------------------
+
+3/10/2022
+
+Invoice:
+  If item already exist. don't create a new input but add qty.
+
+  I have adjusted the trigger comment.
+  adjusted only the QTY of an item.
+
+  STILL NEED TO TEST:
+  The Delete all button
+----------------------------------------
+3/8/2022
+
+
+Comment reading is not directiong properly to where it needs to go 
+needs futher testing.
+
+
+---------------------------------------------
+3/6/2022
+2100: Comment are now being monitor. when a trigger words are found it activates a purchase.
+
+we need to implement the REMOVE ITEM and DECREMENT QTY
+
+
+We need to know if we are adding a Brand NEW item or if it's adding qty to a existing 
+
+we can use the find function.  
+      customer        item
+
+  
+
+/////////////////////////////////////////
+3/5/2022
+
+We need a better way to add items and removed items. 
+
+Removed entire Item. [ This is done]
+Removed qty from item.
+
+
+add qty to an item
+add entire new item. [This is done]
+----------------------------------------------
+
+
+3/1/2021. 
+
+Turns out we can also search for EMOJI. they are string objects.
+can we add emoji to items?
+
+
+currently working on getting REGEX to get the VIDEO ID from the live
+regex now working..
+
+
+we need to find and get location of customer and item.
+added DISPLAYID to customer. 
+
+-------------------------------------
+2/28/2022
+
+We are now able to find a Customer in the UI and most def find this person in the CHAT LIVE.
+need a better error harding.
+
+DisplayID on GRAPHQL -> WAVEAPPS IS ACCOUNT NUMBER.
+This can be used as identifier for clients. Assign though wave apps.
+
+we can use emoji 😝😝😝😝
+------------------------------------------------------------------
+2/27/2022
+
+20:09 seems everything is working now through the LIVE COMMENTS. only add need to do remove item.
+
+start clearing and making general clean up code. start making better notes. 
+
+ ------ to add item functions only adds item.
+---------- function ONLY TO CALL WAVES. for adding removing items. ONE FUNCTION TO CALL.
+--XX Customer done.------ find functions. SHOULD BE FIND CUSTOMER AND ITEMS.
+--------- better error handling when there's no invoice. 
+
+
+
+
+BUTTON WORKS FINE. TO ADD INV AND DELETE AND EDIT 
+
+When it comes to the CHAT LIVE. MULTIPLE INVOICES are being created. PREVIOUS IS NOT DELETED.
+
+TURNS OUT MY KEYWORD TRIGGER IS CALLING MY CREATE INVOICE TWICE. weird. need more testing. 
+
+ALMOST THERE. SO ALMOST THERE. 
+
+
+FACEBOOK LIVE ID:
+            NEED TO FIND A BETTER WAY TO HAVE THIS EXTRACTED FROM A URL LINK OR FIND ANOTHER WAY.
+            \
+
+
+BETTER ERROR HANDLING WHEN THERE'S NO INVOICE
+
+===============================
+
+2/26/2021
+Invoice will be generated. with empty items.
+it will later be used to add items every time.
+with doing so the previous version will be deleted.
+
+
+lets add an item with quantity to invoice. 
+
+lets get the invoice with id number. 
+
+
+
+NOTE FOR INVOICES AND CUSTOMERS.
+  WE need to find the most recent INVOICE that was created. because that would be the last invoice avaialable.
+    this is the invoice that will get deleted and will need to be created as new with new package .. either removed or added. 
+     STEP1: GRAB INVOICE BY ID OF CUSTOMER.
+     STEP 1B: FIND THE MOST RECENT INVOICE.
+     STEP2: EDIT THE ITEMS PRODUCT (ADD OR DELETE QTY ECT.)
+     STEP3: CALL FUNCTION TO UPDATE THIS NEW INVOICE. (ONE FUCTIONS FOR ALL. REMOVE AND DELT)
+     step 3.b: THIS function should call the delete inv and add the new inv.
+
+
+END OF DAY NOTES. ::::
+
+We are now able to create a new added item to invoice. 
+We need to do one to remove an Item. 
+  later we can target that items.
+
+
+Need to clean up WAVEAPPS. That add item function. need to be added to INVOICE.. 
+
+clean up some of the comments.
+
+
+
+
+FACEBOOK LIVE NOTES:
+Need to get the trigger word to make the call to create inv
+
+Seems that needs adjustments.
+
+possibly move the livefb function where there's a useeffect in place.
+
+
+
+    
+----------------------------------------
+>>>>>>> fb/api
 2/220/2022
 
 We can now delete invoice by it's invoice ID.
