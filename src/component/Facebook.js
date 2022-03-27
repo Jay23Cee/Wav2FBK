@@ -5,6 +5,7 @@ import FacebookLogin from "react-facebook-login";
 import TextField from "@mui/material/TextField";
 import additem, { comment_trigger, getData } from "./Wave";
 import { get } from "jquery";
+import { Token } from "graphql";
 
 let customerslist = "";
 let itemlist = "";
@@ -12,6 +13,7 @@ export const populatelist = async () => {
  let [itemlist1, customer_list1]= await getData()
 itemlist= itemlist1
 customerslist=customer_list1
+  
 };
 
 export const fblive = async (liveid) => {
@@ -72,6 +74,7 @@ export const fblive = async (liveid) => {
 export default function Facebook() {
   useEffect(() => {
     fblive(null);
+    populatelist()
   });
 
   const [userId, setuserId] = useState("");
@@ -201,12 +204,13 @@ export const readcomment = async (the_comment) => {
           
           let remove = await find_remov(new_string);
           console.log(remove, "WE ARE LOOKING AT RMOVE ");
-          let re = await  Promise.all([populatelist,findcust(new_string),finditem(new_string),find_remov(new_string)]).then(async(values)=>{
+          await trigger_active(customer_found,item_found,remove)
+      //     let re = await  Promise.all([populatelist,findcust(new_string),finditem(new_string),find_remov(new_string)]).then(async(values)=>{
         console.log(the_comment)
-        await trigger_active(customer_found,item_found,remove)
-        console.log("promise for " , the_comment, " has been fullfilled", values)
+      //   await trigger_active(customer_found,item_found,remove)
+       console.log("promise for " , the_comment, " has been fullfilled")
 
-      })
+      // })
 
 
     }
@@ -280,6 +284,7 @@ const trigger_active = async (customer_found, item_found, remove) => {
     setTimeout(
       setTimeout(async function () {
         try {
+          console.log("TRIGGER GOING ACTIVE")
           await comment_trigger(customer_found, item_found, remove);
           return Promise.resolve("Complete trigger.")
         } catch (error) {
